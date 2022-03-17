@@ -1,5 +1,5 @@
 #include "input.h"
-void fetch_input_events(InputEvents *events) {
+void fetch_input_events(ChipIO *events) {
     SDL_Event sdl_event;
     SDL_PollEvent(&sdl_event);
     switch (sdl_event.type) {

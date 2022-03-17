@@ -35,7 +35,7 @@ typedef struct {
     //TODO: this is out ouf place
     uint8_t quit;
     uint8_t turbo;
-}InputEvents;
+}ChipIO;
 
 #define CH8_EXIT_ON_ERROR 1<<0
 #define CH8_VERBOSE 1<<1

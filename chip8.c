@@ -93,7 +93,7 @@ void chip8_display_instruction(Chip8 *chip, uint8_t x, uint8_t y, uint8_t height
     }
 }
 
-void chip8_cycle(Chip8 *chip, InputEvents* input){
+void chip8_cycle(Chip8 *chip, ChipIO* input){
     if(input->await_key)
         fprintf(stderr, "cycle execution despite awaited input\n");
 

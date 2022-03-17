@@ -28,7 +28,7 @@ void renderer_close(Renderer *renderer);
 void renderer_update(Renderer *renderer);
 
 //TODO: renderer is not needed
-void fetch_input_events(InputEvents *events);
+void fetch_input_events(ChipIO *events);
 
 //TODO: make this private
 void renderer_copy_pixels_from_vram(uint8_t *vram, uint32_t* pixel_buf);

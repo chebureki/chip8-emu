@@ -26,7 +26,7 @@ int main(int argc, char **argv) {
     Chip8 *chip = new_chip8(file_buffer, file_size, CH8_VERBOSE | CH8_USE_8XNN);
     free(file_buffer); //chip copied everything needed!
 
-    InputEvents inputs;
+    ChipIO inputs;
     memset(&inputs,0,sizeof inputs);
 
     rendering_init();
