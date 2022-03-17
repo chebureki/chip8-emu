@@ -192,7 +192,7 @@ void chip8_cycle(Chip8 *chip, ChipIO* input){
         case 0xc: chip->registers[X] = (uint8_t)(rand()&0xff)&NN;return;
 
         //DXYN
-        case 0xd: chip8_display_instruction(chip,chip->registers[X],chip->registers[Y],N);return;
+        case 0xd: chip8_display_instruction(chip,chip->registers[X],chip->registers[Y],N); input->drawn_to_display=1;return;
 
         case 0xe:
             switch (NN) {

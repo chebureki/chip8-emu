@@ -46,11 +46,14 @@ int main(int argc, char **argv) {
         else
             inputs.await_key = 0;
 
+        chip8_cycle(chip,&inputs);
+        if(inputs.drawn_to_display) {
         renderer_copy_pixels_from_vram(chip->vram, renderer->pixel_buff);
         renderer_update(renderer);
-        chip8_cycle(chip,&inputs);
+            inputs.drawn_to_display = 0;
+        }
         if(!inputs.turbo)
-            SDL_Delay(2);
+            SDL_Delay(1);
     }
     chip8_close(chip);
     renderer_close(renderer);

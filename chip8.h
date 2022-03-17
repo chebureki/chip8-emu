@@ -33,6 +33,7 @@ typedef struct {
     uint8_t await_key;
 
     //TODO: this is out ouf place
+    uint8_t drawn_to_display;
     uint8_t quit;
     uint8_t turbo;
 }ChipIO;
@@ -59,7 +60,7 @@ typedef struct{
 
 
 
-void chip8_cycle(Chip8 *chip8, InputEvents* input);
+void chip8_cycle(Chip8 *chip8, ChipIO* input);
 Chip8 *new_chip8(uint8_t *program_data, uint16_t program_data_length, uint16_t config);
 void chip8_close();
 
