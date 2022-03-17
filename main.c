@@ -52,6 +52,7 @@ int main(int argc, char **argv) {
         if(!inputs.turbo)
             SDL_Delay(2);
     }
+    chip8_close(chip);
     renderer_close(renderer);
     rendering_close();
     return 0;

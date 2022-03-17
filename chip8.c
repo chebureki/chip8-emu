@@ -64,6 +64,10 @@ Chip8 *new_chip8(uint8_t *program_data, uint16_t program_data_length, uint16_t c
     return chip;
 }
 
+void chip8_close(Chip8* chip){
+    free(chip);
+}
+
 //instructions are 2 bytes long
 uint16_t chip8_fetch(Chip8 *chip){
     return (((uint16_t)chip->memory[chip->program_counter])<<8) | chip->memory[chip->program_counter+1];
