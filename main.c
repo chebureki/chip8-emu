@@ -30,9 +30,15 @@ int main(int argc, char **argv) {
     rendering_init();
     Renderer *renderer = new_renderer();
 
+    char paused = 0;
+
     uint32_t old_ticks = SDL_GetTicks();
     while(!(inputs.extra&INPUT_QUIT)){
         fetch_input_events(&inputs);
+        if(inputs.extra&INPUT_PAUSE)
+            paused = 1;
+        if(inputs.extra&INPUT_RUN)
+            paused = 0;
 
         uint32_t new_ticks = SDL_GetTicks();
         chip->timer = (chip->timer-(new_ticks-old_ticks))%61;
@@ -44,7 +50,12 @@ int main(int argc, char **argv) {
         else
             inputs.chipio.await_key = 0;
 
-        chip8_cycle(chip,&inputs.chipio);
+        if (!paused || (inputs.extra&INPUT_STEP)){
+            chip8_cycle(chip,&inputs.chipio);
+            if(inputs.extra&INPUT_STEP) inputs.extra &= ~INPUT_STEP; //unset step key so only one step is made
+        }
+
+
         if(inputs.chipio.drawn_to_display) {
             renderer_copy_pixels_from_vram(chip->vram, renderer->pixel_buff);
             renderer_update(renderer);

@@ -9,7 +9,10 @@ void fetch_input_events(Inputs *inputs) {
 
         case SDL_KEYDOWN:
             switch(sdl_event.key.keysym.sym){
-                case SDLK_TAB:  inputs->extra |= INPUT_TURBO; break;
+                case INPUT_TURBO_KEY:   inputs->extra |= INPUT_TURBO; break;
+                case INPUT_PAUSE_KEY:   inputs->extra |= INPUT_PAUSE; break;
+                case INPUT_RUN_KEY:     inputs->extra |= INPUT_RUN; break;
+                case INPUT_STEP_KEY:    inputs->extra |= INPUT_STEP; break;
 
                 case SDLK_1: inputs->chipio.controls|=KEY_1;break;
                 case SDLK_2: inputs->chipio.controls|=KEY_2;break;
@@ -31,7 +34,10 @@ void fetch_input_events(Inputs *inputs) {
             break;
         case SDL_KEYUP:
             switch(sdl_event.key.keysym.sym){
-                case SDLK_TAB: inputs->extra&=~INPUT_TURBO;
+                case INPUT_TURBO_KEY:   inputs->extra&=~INPUT_TURBO; break;
+                case INPUT_PAUSE_KEY:   inputs->extra&=~INPUT_PAUSE; break;
+                case INPUT_RUN_KEY:     inputs->extra&=~INPUT_RUN; break;
+                case INPUT_STEP_KEY:    inputs->extra&=~INPUT_STEP; break;
 
                 case SDLK_1: inputs->chipio.controls&=~KEY_1;break;
                 case SDLK_2: inputs->chipio.controls&=~KEY_2;break;
