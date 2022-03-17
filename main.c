@@ -3,7 +3,6 @@
 #include "input.h"
 
 #include <stdio.h>
-#include <SDL2/SDL.h>
 
 int main(int argc, char **argv) {
     if(argc<2){
@@ -26,14 +25,13 @@ int main(int argc, char **argv) {
     Chip8 *chip = new_chip8(file_buffer, file_size, CH8_VERBOSE | CH8_USE_8XNN);
     free(file_buffer); //chip copied everything needed!
 
-    ChipIO inputs;
-    memset(&inputs,0,sizeof inputs);
+    Inputs inputs = {.chipio = {}, .extra=0};
 
     rendering_init();
     Renderer *renderer = new_renderer();
 
     uint32_t old_ticks = SDL_GetTicks();
-    while(!inputs.quit){
+    while(!(inputs.extra&INPUT_QUIT)){
         fetch_input_events(&inputs);
 
         uint32_t new_ticks = SDL_GetTicks();
@@ -41,18 +39,18 @@ int main(int argc, char **argv) {
         chip->sound_timer = (chip->sound_timer-(new_ticks-old_ticks))%61;
         old_ticks = new_ticks;
 
-        if(inputs.await_key && (!inputs.controls))
+        if(inputs.chipio.await_key && (!inputs.chipio.controls))
             continue;
         else
-            inputs.await_key = 0;
+            inputs.chipio.await_key = 0;
 
-        chip8_cycle(chip,&inputs);
-        if(inputs.drawn_to_display) {
-        renderer_copy_pixels_from_vram(chip->vram, renderer->pixel_buff);
-        renderer_update(renderer);
-            inputs.drawn_to_display = 0;
+        chip8_cycle(chip,&inputs.chipio);
+        if(inputs.chipio.drawn_to_display) {
+            renderer_copy_pixels_from_vram(chip->vram, renderer->pixel_buff);
+            renderer_update(renderer);
+            inputs.chipio.drawn_to_display = 0;
         }
-        if(!inputs.turbo)
+        if(!(inputs.extra&INPUT_TURBO))
             SDL_Delay(1);
     }
     chip8_close(chip);

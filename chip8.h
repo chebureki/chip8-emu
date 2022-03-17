@@ -34,8 +34,6 @@ typedef struct {
 
     //TODO: this is out ouf place
     uint8_t drawn_to_display;
-    uint8_t quit;
-    uint8_t turbo;
 }ChipIO;
 
 #define CH8_EXIT_ON_ERROR 1<<0
