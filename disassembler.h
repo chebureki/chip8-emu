@@ -1,0 +1,10 @@
+#include <stdint.h>
+
+#ifndef CHIP8_EMULATOR_DISASSEMBLER_H
+#define CHIP8_EMULATOR_DISASSEMBLER_H
+
+#define DISASSEMBLY_MAX_STR_LEN 16
+
+int disassemble(char dst[DISASSEMBLY_MAX_STR_LEN], uint16_t ins);
+
+#endif //CHIP8_EMULATOR_DISASSEMBLER_H

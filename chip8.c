@@ -1,4 +1,5 @@
 #include "chip8.h"
+#include "disassembler.h"
 
 #include <stdlib.h>
 #include <string.h>
@@ -93,6 +94,17 @@ void chip8_display_instruction(Chip8 *chip, uint8_t x, uint8_t y, uint8_t height
     }
 }
 
+void chip8_dump_state(Chip8 *chip, uint16_t ins){
+    char disassembled[DISASSEMBLY_MAX_STR_LEN];
+    disassemble(disassembled, ins);
+    printf("pc: %04x ins: %04x %s\n\tI:%04x t: %02d st: %02d V0: %02x V1: %02x V2: %02x V3: %02x V4: %02x V5: %02x V6: %02x V7: %02x V8: %02x V9: %02x VA: %02x VB: %02x VC: %02x VD: %02x VE: %02x VF: %02x\n",chip->program_counter,
+           ins, disassembled,
+           chip->index_register,
+           chip->timer, chip->sound_timer,
+           chip->registers[0],chip->registers[1],chip->registers[2],chip->registers[3],chip->registers[4],chip->registers[5],chip->registers[6],chip->registers[7],chip->registers[8],chip->registers[9],chip->registers[10],chip->registers[11],chip->registers[12],chip->registers[13],chip->registers[14],chip->registers[15]
+           );
+}
+
 void chip8_cycle(Chip8 *chip, ChipIO* input){
     if(input->await_key)
         fprintf(stderr, "cycle execution despite awaited input\n");
@@ -100,7 +112,7 @@ void chip8_cycle(Chip8 *chip, ChipIO* input){
     uint16_t ins = chip8_fetch(chip);
 
     if(chip->config&CH8_VERBOSE)
-        printf("pc: %04x ins: %04x\n",chip->program_counter,ins);
+        chip8_dump_state(chip, ins);
     chip->program_counter+=2;
     uint16_t NNN =   (ins&0x0fff)>>0;    //e.g.: 1NNN
     uint8_t NN =    (ins&0x00ff)>>0;    //e.g.: 6XNN
@@ -204,7 +216,7 @@ void chip8_cycle(Chip8 *chip, ChipIO* input){
         case 0xf:
             switch (NN) {
                 case 0x07: chip->registers[X]=chip->timer; return;
-                case 0x0a: input->await_key=1;printf("awaiting input\n");return;
+                case 0x0a: input->await_key=1;printf("awaiting input\n");return; //TODO: missing store in VX
                 case 0x15: chip->timer = chip->registers[X]; return;
                 case 0x18: chip->sound_timer = chip->registers[X]; return;
                 case 0x1e: chip->index_register += chip->registers[X]; return;
